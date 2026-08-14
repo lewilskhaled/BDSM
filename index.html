@@ -15,31 +15,21 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
-  :root {
-  /* Fond sombres et mystérieux */
-  --noir: #0b070d;            /* Noir teinté d'une pointe d'ombre violette */
-  --noir-2: #150d18;          /* Obsidienne prune */
-  --anthracite: #241529;      /* Nuit velours */
-
-  /* Nuances de Violet Sensuel & Cœur de Palette */
-  --violet-sensuel: #6b1d52;  /* Magenta/Violet captivant et charnel */
-  --violet-deep: #3d0a2f;     /* Prune nocturne profond */
-  --violet-eclat: #8e2a6d;    /* Accent vibrant et séduisant */
-
-  /* Touches Échappées & Accents Charnels */
-  --or: #e0a96d;              /* Or rosé chaud */
-  --or-doux: #c48b59;         /* Ambre doux */
-  --ivoire: #f4e9e2;          /* Voile rose-ivoire délicat */
-  --ivoire-att: #b8a297;      /* Ombre de soie atténuée */
-
-  /* États & Notifications */
-  --danger: #9a1c3d;          /* Rouge grenat velours */
-  --ok: #2f6b56;              /* Émeraude profond */
-
-  /* Typographies Élégantes */
-  --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'EB Garamond', serif;
-}
+  :root{
+    --noir: #0b0b0b;
+    --noir-2: #131110;
+    --anthracite: #201d1c;
+    --bordeaux: #6d0f0f;
+    --bordeaux-deep: #40080a;
+    --or: #d4af37;
+    --or-doux: #b9954a;
+    --ivoire: #ede3cf;
+    --ivoire-att: #a89c88;
+    --danger: #9a1c1c;
+    --ok: #2f6b4f;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'EB Garamond', serif;
+  }
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -57,12 +47,28 @@
     flex-direction:column;
     align-items:center;
     justify-content:flex-start;
-    padding: 28px 20px 60px;
+    padding: clamp(20px, 4vw, 48px) clamp(16px, 5vw, 32px) 60px;
   }
 
   .screen{ width:100%; max-width:480px; display:none; flex-direction:column; align-items:center; animation: fadeIn .5s ease; }
   .screen.active{ display:flex; }
   @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  /* Tablettes et écrans moyens : on laisse plus de place au contenu */
+  @media (min-width: 700px){
+    .screen{ max-width:560px; }
+    h1.title{ font-size:48px; }
+    p.sub{ font-size:17px; max-width:420px; }
+    .frame{ padding:32px; }
+  }
+
+  /* Grands écrans / desktop : mise en page confortable, jamais étirée */
+  @media (min-width: 1024px){
+    #app{ padding-top:64px; }
+    .screen{ max-width:620px; }
+    h1.title{ font-size:54px; }
+    .draw-card .value{ font-size:24px; }
+  }
 
   .eyebrow{
     letter-spacing:.35em; text-transform:uppercase; font-size:11px;
@@ -71,7 +77,7 @@
 
   h1.title{
     font-family: var(--font-display); font-weight:600; font-style:italic;
-    font-size: 40px; color: var(--ivoire); text-align:center; margin:0 0 6px;
+    font-size: clamp(30px, 8vw, 40px); color: var(--ivoire); text-align:center; margin:0 0 6px;
     text-shadow: 0 0 22px rgba(212,175,55,.18);
   }
 
@@ -116,6 +122,10 @@
   input.code-input:focus{ outline:none; border-color: var(--or); box-shadow:0 0 0 3px rgba(212,175,55,.15); }
 
   .role-choice{ display:flex; flex-direction:column; gap:14px; width:100%; margin-top:8px; }
+  @media (min-width: 600px){
+    .role-choice{ flex-direction:row; }
+    .role-card{ flex:1; }
+  }
   .role-card{
     border:1px solid rgba(212,175,55,.3); border-radius:14px; padding:18px 20px;
     background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.3));
@@ -127,7 +137,7 @@
 
   /* ---------- Code de session (Souverain) ---------- */
   .session-code{
-    font-family: var(--font-display); font-size:46px; letter-spacing:.15em;
+    font-family: var(--font-display); font-size: clamp(30px, 9vw, 46px); letter-spacing:.15em;
     color: var(--or); text-align:center; margin: 6px 0 4px;
     text-shadow: 0 0 30px rgba(212,175,55,.35);
   }
@@ -136,6 +146,12 @@
   /* ---------- Roue ---------- */
   .wheel-wrap{
     position:relative; width: min(88vw, 360px); aspect-ratio:1/1; margin: 10px auto 22px;
+  }
+  @media (min-width: 700px){
+    .wheel-wrap{ width: min(60vw, 420px); }
+  }
+  @media (min-width: 1024px){
+    .wheel-wrap{ width: min(38vw, 460px); }
   }
   .pointer{
     position:absolute; top:-14px; left:50%; transform:translateX(-50%);
@@ -207,11 +223,11 @@
     <p class="sub">Choisissez votre rôle pour cet appareil. Ce choix sera verrouillé définitivement sur ce téléphone.</p>
     <div class="role-choice">
       <div class="role-card" onclick="chooseRole('souverain')">
-        <h3>Dominant</h3>
+        <h3>Le Dominant</h3>
         <p>Crée la session, reçoit les tirages et accorde les récompenses.</p>
       </div>
       <div class="role-card" onclick="chooseRole('participant')">
-        <h3>La soumise</h3>
+        <h3>La Soumise</h3>
         <p>Rejoint une session existante grâce à un code, et fait tourner la roue.</p>
       </div>
     </div>
@@ -223,7 +239,7 @@
     <h1 class="title">Votre Code</h1>
     <div class="frame">
       <div class="session-code" id="generatedCode">— — — —</div>
-      <div class="hint">Communiquez ce code au Participant pour lier son appareil au vôtre.</div>
+      <div class="hint">Communiquez ce code à La Soumise pour lier son appareil au vôtre.</div>
       <button class="btn" onclick="enterControlPanel()">Accéder au Panneau de Contrôle</button>
     </div>
   </section>
@@ -251,7 +267,7 @@
     </div>
     <div class="status-line" id="wheelStatus">Faites tourner la roue quand vous êtes prête.</div>
     <button class="btn" id="spinBtn" onclick="spinWheel()">Faire tourner la Roue</button>
-    <div class="footer-role">Rôle verrouillé · Soumise</div>
+    <div class="footer-role">Rôle verrouillé · La Soumise</div>
   </section>
 
   <!-- =================== ECRAN 3 : SOUVERAIN — PANNEAU DE CONTROLE =================== -->
@@ -266,7 +282,7 @@
       </div>
     </div>
 
-    <div class="footer-role">Rôle verrouillé · Dominant</div>
+    <div class="footer-role">Rôle verrouillé · Le Dominant</div>
   </section>
 
 </div>
@@ -275,7 +291,7 @@
 <div class="overlay" id="rewardOverlay">
   <div class="popup">
     <div class="eyebrow">Récompense Accordée</div>
-    <h2>Voici votre récompense chère soumise</h2>
+    <h2>Voici votre récompense</h2>
     <p id="rewardText">—</p>
     <button class="btn" style="margin-top:18px;" onclick="closeRewardPopup()">J'ai compris</button>
   </div>
@@ -420,7 +436,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (currentRole === 'souverain' && currentSession) {
     document.getElementById('generatedCode').textContent = currentSession;
     enterControlPanel();
-  } else if (currentRole === 'dominant' && currentSession) {
+  } else if (currentRole === 'participant' && currentSession) {
     enterWheelScreen();
   } else {
     showScreen('screen-role');
@@ -436,16 +452,16 @@ function generateSessionCode(){
 }
 
 function chooseRole(role){
-  if (role === 'dominant') {
+  if (role === 'souverain') {
     const code = generateSessionCode();
     db.collection('sessions').doc(code).set({
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       lastSpin: null,
       currentDraw: null
     }).then(() => {
-      currentRole = 'dominant';
+      currentRole = 'souverain';
       currentSession = code;
-      LS.setItem('role', 'dominant');
+      LS.setItem('role', 'souverain');
       LS.setItem('sessionCode', code);
       document.getElementById('generatedCode').textContent = code;
       showScreen('screen-souverain-code');
@@ -454,7 +470,7 @@ function chooseRole(role){
       alert("Erreur de connexion à la base de données. Vérifiez la configuration Firebase.\n" + err.message);
     });
   } else {
-    showScreen('screen-soumise-join');
+    showScreen('screen-participant-join');
   }
 }
 
@@ -469,9 +485,9 @@ function joinSession(){
       statusEl.textContent = "Code introuvable. Vérifiez et réessayez.";
       return;
     }
-    currentRole = 'soumise';
+    currentRole = 'participant';
     currentSession = code;
-    LS.setItem('role', 'soumise');
+    LS.setItem('role', 'participant');
     LS.setItem('sessionCode', code);
     enterWheelScreen();
   }).catch(err => {
@@ -523,7 +539,7 @@ function enterControlPanel(){
       renderControlContent(data ? data.currentDraw : null);
       if (data && data.currentDraw && data.currentDraw.status === 'pending') {
         if (document.hidden) {
-          notifydominant(data.currentDraw);
+          notifySouverain(data.currentDraw);
         }
       }
     });
