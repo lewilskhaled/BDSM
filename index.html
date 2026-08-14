@@ -16,7 +16,7 @@
 
 <style>
   :root{
-    /* Nouvelles nuances : Violet Sensuel & BDSM Prune */
+    /* Nuances : Violet Sensuel & BDSM Prune */
     --noir: #08040a;
     --noir-2: #120917;
     --anthracite: #1f1227;
@@ -56,7 +56,7 @@
   .screen.active{ display:flex; }
   @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 
-  /* Tablettes et écrans moyens : on laisse plus de place au contenu */
+  /* Tablettes et écrans moyens */
   @media (min-width: 700px){
     .screen{ max-width:560px; }
     h1.title{ font-size:48px; }
@@ -64,7 +64,7 @@
     .frame{ padding:32px; }
   }
 
-  /* Grands écrans / desktop : mise en page confortable, jamais étirée */
+  /* Grands écrans / desktop */
   @media (min-width: 1024px){
     #app{ padding-top:64px; }
     .screen{ max-width:620px; }
@@ -208,6 +208,38 @@
   .popup h2{ font-family: var(--font-display); font-style:italic; color: var(--or-rose); font-size:26px; margin:10px 0; }
   .popup p{ color: var(--ivoire-att); font-size:15px; }
 
+  /* ---------- ANIMATION DE BIENVENUE SENSUELLE ---------- */
+  #welcomeOverlay{
+    position:fixed; inset:0; background: rgba(8,4,10,.95); backdrop-filter: blur(10px);
+    display:none; flex-direction:column; align-items:center; justify-content:center;
+    z-index:100; overflow:hidden; opacity:0; transition: opacity .5s ease;
+  }
+  #welcomeOverlay.active{ display:flex; opacity:1; }
+  
+  .welcome-title{
+    font-family: var(--font-display); font-style:italic; font-size: clamp(32px, 8vw, 52px);
+    color: var(--or-rose); text-align:center; z-index:2;
+    text-shadow: 0 0 25px var(--violet-neon), 0 0 50px var(--violet-bordeaux);
+    animation: pulseText 2s infinite ease-in-out;
+  }
+  .welcome-sub{
+    font-family: var(--font-body); font-size: clamp(16px, 4vw, 22px);
+    color: var(--ivoire); text-align:center; z-index:2; margin-top:10px;
+    letter-spacing:.1em; text-transform:uppercase;
+  }
+  @keyframes pulseText {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.04); filter: brightness(1.3); }
+  }
+
+  .particle{
+    position:absolute; pointer-events:none; z-index:1; animation: floatUp linear forwards;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; }
+  }
+
   .footer-role{
     margin-top:26px; font-size:11px; color: rgba(188,168,196,.5); letter-spacing:.2em; text-transform:uppercase;
   }
@@ -291,7 +323,7 @@
 
 </div>
 
-<!-- =================== POPUP RECOMPENSE (Participant) =================== -->
+<!-- =================== POPUP RECOMPENSE =================== -->
 <div class="overlay" id="rewardOverlay">
   <div class="popup">
     <div class="eyebrow">Récompense Accordée</div>
@@ -299,6 +331,12 @@
     <p id="rewardText">—</p>
     <button class="btn" style="margin-top:18px;" onclick="closeRewardPopup()">J'ai compris</button>
   </div>
+</div>
+
+<!-- =================== OVERLAY ANIMATION SENSUELLE =================== -->
+<div id="welcomeOverlay">
+  <div class="welcome-title">Bienvenue, Ma Soumise...</div>
+  <div class="welcome-sub">Préparez-vous à vous soumettre au destin</div>
 </div>
 
 <script>
@@ -318,7 +356,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* ==========================================================================
-   DONNEES DE LA ROUE — 16 CASES (à éditer librement)
+   DONNEES DE LA ROUE — 16 CASES
    ========================================================================== */
 const WHEEL_DATA = [
   {
@@ -358,7 +396,7 @@ const WHEEL_DATA = [
   },
   {
     action: "Postures de Soumission & Exposition Intime",
-    condition: "Rester totalement immobile en maintaining l'exposition totale de ses zones intimes sous votre regard.",
+    condition: "Rester totalement immobile en maintenant l'exposition totale de ses zones intimes sous votre regard.",
     recompense: "Crédit Shopping (Budget cadeau débloqué sur sa boutique préférée, offert par le Dominant)."
   },
   {
@@ -425,7 +463,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les valeurs <code>REMPLACER_MOI</code> par les clés de ton projet Firebase pour que l'application fonctionne.";
+    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les clés de ton projet Firebase pour que l'application fonctionne.";
   }
 
   if (currentRole === 'souverain' && currentSession) {
@@ -443,18 +481,49 @@ function isFirebaseConfigMissing(){
 }
 
 /* ==========================================================================
-   CHOIX DU ROLE
+   CHOIX DU ROLE & ANIMATION SENSUELLE
    ========================================================================== */
 function generateSessionCode(){
   const n = Math.floor(1000 + Math.random() * 9000);
   return `SESSION-${n}`;
 }
 
+function triggerSensualWelcome(callback){
+  const overlay = document.getElementById('welcomeOverlay');
+  overlay.classList.add('active');
+
+  const symbols = ['🖤', '💜', '✨', '💋', '⛓️', '🔮'];
+  
+  for(let i=0; i<35; i++){
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.bottom = '-50px';
+      p.style.fontSize = (Math.random() * 20 + 18) + 'px';
+      p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      overlay.appendChild(p);
+
+      setTimeout(() => p.remove(), 4000);
+    }, i * 70);
+  }
+
+  setTimeout(() => {
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.classList.remove('active');
+      overlay.style.opacity = '1';
+      callback();
+    }, 500);
+  }, 2800);
+}
+
 function chooseRole(role){
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Impossible de continuer : la configuration Firebase n'est pas renseignée.<br>Remplace les valeurs dans le code avant d'utiliser l'application.";
+    warn.innerHTML = "⚠️ Configuration Firebase manquante dans le code.";
     return;
   }
 
@@ -476,13 +545,12 @@ function chooseRole(role){
       requestNotificationPermission();
     }).catch(err => {
       cards.forEach(c => c.style.opacity = '1');
-      const warn = document.getElementById('configWarning');
-      warn.style.display = 'block';
-      warn.innerHTML = "⚠️ Échec de connexion à la base de données.<br>Détail technique : " + escapeHtml(err.message);
       console.error('Erreur création session :', err);
     });
   } else {
-    showScreen('screen-participant-join');
+    triggerSensualWelcome(() => {
+      showScreen('screen-participant-join');
+    });
   }
 }
 
@@ -509,7 +577,7 @@ function joinSession(){
 }
 
 /* ==========================================================================
-   NOTIFICATIONS (Souverain)
+   NOTIFICATIONS
    ========================================================================== */
 function requestNotificationPermission(){
   if ('Notification' in window && Notification.permission === 'default') {
@@ -603,7 +671,7 @@ function enterWheelScreen(){
     });
 }
 
-/* ---- Dessin de la roue (Canvas : nuances Violet Sensuel / Prune) ---- */
+/* ---- Dessin de la roue ---- */
 const SEGMENT_COLORS = ['#4a0e4e', '#1f1227'];
 
 function drawWheel(){
