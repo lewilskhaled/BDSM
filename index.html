@@ -758,8 +758,12 @@ function spinWheel(){
 function finishSpin(index){
   isSpinning = false;
   const item = WHEEL_DATA[index];
-  document.getElementById('wheelStatus').textContent =
-    "Votre choix sera communiqué à votre Dominant, préparez-vous à la réaliser.";
+
+  // Affichage direct du résultat à l'écran
+  document.getElementById('wheelStatus').textContent = "Tirage effectué ! En attente de validation.";
+  
+  // Pop-up d'annonce du tirage
+  showRewardPopup(`Vous avez tiré : "${item.action}". Condition : ${item.condition}`);
 
   LS.removeItem('lastShownDrawId');
   lastShownDrawId = null;
