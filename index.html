@@ -16,16 +16,18 @@
 
 <style>
   :root{
-    --noir: #0b0b0b;
-    --noir-2: #131110;
-    --anthracite: #201d1c;
-    --bordeaux: #6d0f0f;
-    --bordeaux-deep: #40080a;
-    --or: #d4af37;
-    --or-doux: #b9954a;
-    --ivoire: #ede3cf;
-    --ivoire-att: #a89c88;
-    --danger: #9a1c1c;
+    /* Nouvelles nuances : Violet Sensuel & BDSM Prune */
+    --noir: #08040a;
+    --noir-2: #120917;
+    --anthracite: #1f1227;
+    --violet-deep: #2a083b;
+    --violet-bordeaux: #4a0e4e;
+    --violet-neon: #9d2b9d;
+    --or-rose: #e2b49a;
+    --or-doux: #c98bb9;
+    --ivoire: #f3e8f4;
+    --ivoire-att: #bca8c4;
+    --danger: #b21e4b;
     --ok: #2f6b4f;
     --font-display: 'Cormorant Garamond', serif;
     --font-body: 'EB Garamond', serif;
@@ -35,7 +37,7 @@
 
   html,body{
     margin:0; padding:0; height:100%;
-    background: radial-gradient(120% 100% at 50% 0%, #171413 0%, var(--noir) 60%, #060505 100%);
+    background: radial-gradient(120% 100% at 50% 0%, #1e0a29 0%, var(--noir) 60%, #040205 100%);
     color: var(--ivoire);
     font-family: var(--font-body);
     overflow-x:hidden;
@@ -78,48 +80,48 @@
   h1.title{
     font-family: var(--font-display); font-weight:600; font-style:italic;
     font-size: clamp(30px, 8vw, 40px); color: var(--ivoire); text-align:center; margin:0 0 6px;
-    text-shadow: 0 0 22px rgba(212,175,55,.18);
+    text-shadow: 0 0 22px rgba(157,43,157,.4);
   }
 
   p.sub{ color:var(--ivoire-att); text-align:center; font-size:16px; max-width:360px; margin:0 auto 28px; line-height:1.5; }
 
   .frame{
-    width:100%; border:1px solid rgba(212,175,55,.35);
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.25));
+    width:100%; border:1px solid rgba(201,139,185,.35);
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.35));
     border-radius:18px; padding:24px; position:relative;
-    box-shadow: 0 0 0 1px rgba(212,175,55,.06), 0 20px 60px rgba(0,0,0,.55);
+    box-shadow: 0 0 0 1px rgba(157,43,157,.12), 0 20px 60px rgba(0,0,0,.75);
   }
   .frame::before{
-    content:""; position:absolute; inset:6px; border:1px solid rgba(212,175,55,.15); border-radius:12px; pointer-events:none;
+    content:""; position:absolute; inset:6px; border:1px solid rgba(226,180,154,.15); border-radius:12px; pointer-events:none;
   }
 
   .btn{
     font-family: var(--font-display); font-weight:600; font-size:18px; letter-spacing:.06em;
-    color: var(--noir); background: linear-gradient(180deg, #e8cd77, var(--or) 60%, #a9822f);
+    color: #ffffff; background: linear-gradient(180deg, #ba3cba, var(--violet-neon) 60%, #681868);
     border:none; border-radius:10px; padding:15px 22px; width:100%;
     cursor:pointer; text-transform:uppercase;
-    box-shadow: 0 8px 20px rgba(212,175,55,.25), inset 0 1px 0 rgba(255,255,255,.4);
+    box-shadow: 0 8px 20px rgba(157,43,157,.35), inset 0 1px 0 rgba(255,255,255,.3);
     transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
   }
   .btn:active{ transform: translateY(1px) scale(.99); }
   .btn:disabled{ filter:grayscale(.6) brightness(.6); cursor:not-allowed; box-shadow:none; }
 
   .btn.ghost{
-    background:transparent; color: var(--or); border:1px solid rgba(212,175,55,.5);
+    background:transparent; color: var(--or-doux); border:1px solid rgba(201,139,185,.5);
     box-shadow:none; margin-top:12px;
   }
   .btn.bordeaux{
-    background: linear-gradient(180deg, #a3302f, var(--bordeaux) 55%, var(--bordeaux-deep));
+    background: linear-gradient(180deg, #74167a, var(--violet-bordeaux) 55%, var(--violet-deep));
     color: var(--ivoire);
-    box-shadow: 0 8px 20px rgba(109,15,15,.4), inset 0 1px 0 rgba(255,255,255,.12);
+    box-shadow: 0 8px 20px rgba(74,14,78,.5), inset 0 1px 0 rgba(255,255,255,.12);
   }
 
   input.code-input{
     width:100%; text-align:center; letter-spacing:.3em; font-family: var(--font-display);
-    font-size:26px; padding:14px; border-radius:10px; border:1px solid rgba(212,175,55,.4);
-    background: rgba(0,0,0,.35); color: var(--or); margin-bottom:16px; text-transform:uppercase;
+    font-size:26px; padding:14px; border-radius:10px; border:1px solid rgba(201,139,185,.4);
+    background: rgba(8,4,10,.6); color: var(--or-rose); margin-bottom:16px; text-transform:uppercase;
   }
-  input.code-input:focus{ outline:none; border-color: var(--or); box-shadow:0 0 0 3px rgba(212,175,55,.15); }
+  input.code-input:focus{ outline:none; border-color: var(--violet-neon); box-shadow:0 0 0 3px rgba(157,43,157,.25); }
 
   .role-choice{ display:flex; flex-direction:column; gap:14px; width:100%; margin-top:8px; }
   @media (min-width: 600px){
@@ -127,19 +129,20 @@
     .role-card{ flex:1; }
   }
   .role-card{
-    border:1px solid rgba(212,175,55,.3); border-radius:14px; padding:18px 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.3));
-    cursor:pointer; transition: border-color .2s, transform .15s;
+    border:1px solid rgba(201,139,185,.3); border-radius:14px; padding:18px 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(26,10,36,.4));
+    cursor:pointer; transition: border-color .2s, transform .15s, box-shadow .2s;
   }
+  .role-card:hover{ border-color: var(--violet-neon); box-shadow: 0 0 15px rgba(157,43,157,.2); }
   .role-card:active{ transform: scale(.98); }
-  .role-card h3{ font-family: var(--font-display); font-style:italic; color: var(--or); margin:0 0 4px; font-size:22px; }
+  .role-card h3{ font-family: var(--font-display); font-style:italic; color: var(--or-rose); margin:0 0 4px; font-size:22px; }
   .role-card p{ margin:0; color: var(--ivoire-att); font-size:14px; }
 
   /* ---------- Code de session (Souverain) ---------- */
   .session-code{
     font-family: var(--font-display); font-size: clamp(30px, 9vw, 46px); letter-spacing:.15em;
-    color: var(--or); text-align:center; margin: 6px 0 4px;
-    text-shadow: 0 0 30px rgba(212,175,55,.35);
+    color: var(--or-rose); text-align:center; margin: 6px 0 4px;
+    text-shadow: 0 0 30px rgba(226,180,154,.4);
   }
   .hint{ font-size:13px; color: var(--ivoire-att); text-align:center; margin-bottom:18px; }
 
@@ -156,18 +159,18 @@
   .pointer{
     position:absolute; top:-14px; left:50%; transform:translateX(-50%);
     width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent;
-    border-top:26px solid var(--or); z-index:5;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,.6));
+    border-top:26px solid var(--or-rose); z-index:5;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.8));
   }
   canvas#wheelCanvas{
     width:100%; height:100%; border-radius:50%;
-    box-shadow: 0 0 0 6px var(--noir-2), 0 0 0 8px rgba(212,175,55,.6), 0 20px 50px rgba(0,0,0,.6);
+    box-shadow: 0 0 0 6px var(--noir-2), 0 0 0 8px rgba(201,139,185,.6), 0 20px 50px rgba(0,0,0,.8);
   }
   .hub{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
     width:56px; height:56px; border-radius:50%; z-index:4;
-    background: radial-gradient(circle at 35% 30%, #f3e2a0, var(--or) 55%, #8a6a20);
-    box-shadow: 0 0 0 2px var(--noir), 0 4px 12px rgba(0,0,0,.6);
+    background: radial-gradient(circle at 35% 30%, #f4d3c1, var(--or-rose) 55%, #8d5639);
+    box-shadow: 0 0 0 2px var(--noir), 0 4px 12px rgba(0,0,0,.7);
   }
 
   .status-line{
@@ -175,8 +178,8 @@
   }
   /* ---------- Panneau Souverain ---------- */
   .draw-card{
-    width:100%; border:1px solid rgba(212,175,55,.3); border-radius:14px; padding:20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.3)); margin-bottom:16px;
+    width:100%; border:1px solid rgba(201,139,185,.3); border-radius:14px; padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(26,10,36,.4)); margin-bottom:16px;
   }
   .draw-card .label{ font-size:11px; letter-spacing:.25em; text-transform:uppercase; color: var(--or-doux); margin-bottom:4px; }
   .draw-card .value{ font-family: var(--font-display); font-size:22px; font-style:italic; color: var(--ivoire); margin-bottom:14px; }
@@ -186,27 +189,27 @@
     display:inline-block; padding:4px 10px; border-radius:20px; font-size:11px; letter-spacing:.1em;
     text-transform:uppercase; border:1px solid;
   }
-  .badge.pending{ color:#e8cd77; border-color:#e8cd77; }
+  .badge.pending{ color:#e2b49a; border-color:#e2b49a; }
   .badge.granted{ color:#7fd0a0; border-color:#7fd0a0; }
 
   /* ---------- Popup récompense ---------- */
   .overlay{
-    position:fixed; inset:0; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+    position:fixed; inset:0; background: rgba(8,4,10,.85); backdrop-filter: blur(8px);
     display:none; align-items:center; justify-content:center; z-index:50; padding:24px;
   }
   .overlay.active{ display:flex; }
   .popup{
-    max-width:380px; width:100%; text-align:center; border:1px solid rgba(212,175,55,.5);
-    border-radius:16px; padding:32px 26px; background: linear-gradient(180deg, #1b1817, #0b0a09);
-    box-shadow: 0 0 60px rgba(212,175,55,.15), 0 30px 80px rgba(0,0,0,.7);
+    max-width:380px; width:100%; text-align:center; border:1px solid rgba(201,139,185,.5);
+    border-radius:16px; padding:32px 26px; background: linear-gradient(180deg, #1f0b27, #0b040e);
+    box-shadow: 0 0 60px rgba(157,43,157,.25), 0 30px 80px rgba(0,0,0,.8);
     animation: popIn .4s cubic-bezier(.2,.9,.3,1.3);
   }
   @keyframes popIn{ from{ transform:scale(.85); opacity:0;} to{ transform:scale(1); opacity:1; } }
-  .popup h2{ font-family: var(--font-display); font-style:italic; color: var(--or); font-size:26px; margin:10px 0; }
+  .popup h2{ font-family: var(--font-display); font-style:italic; color: var(--or-rose); font-size:26px; margin:10px 0; }
   .popup p{ color: var(--ivoire-att); font-size:15px; }
 
   .footer-role{
-    margin-top:26px; font-size:11px; color: rgba(168,156,136,.5); letter-spacing:.2em; text-transform:uppercase;
+    margin-top:26px; font-size:11px; color: rgba(188,168,196,.5); letter-spacing:.2em; text-transform:uppercase;
   }
 
   .link-ghost{ background:none; border:none; color: var(--ivoire-att); text-decoration:underline; font-size:13px; margin-top:16px; cursor:pointer; }
@@ -221,7 +224,7 @@
     <div class="eyebrow">Session Privée</div>
     <h1 class="title">La Roue</h1>
     <p class="sub">Choisissez votre rôle pour cet appareil. Ce choix sera verrouillé définitivement sur ce téléphone.</p>
-    <div id="configWarning" style="display:none; width:100%; margin-bottom:18px; padding:14px 16px; border:1px solid rgba(154,28,28,.6); background:rgba(154,28,28,.12); border-radius:10px; color:#f0b0b0; font-size:13px; line-height:1.5;"></div>
+    <div id="configWarning" style="display:none; width:100%; margin-bottom:18px; padding:14px 16px; border:1px solid rgba(178,30,75,.6); background:rgba(178,30,75,.12); border-radius:10px; color:#f0b0c0; font-size:13px; line-height:1.5;"></div>
     <div class="role-choice">
       <div class="role-card" onclick="chooseRole('souverain')">
         <h3>Le Dominant</h3>
@@ -301,20 +304,6 @@
 <script>
 /* ==========================================================================
    CONFIGURATION FIREBASE
-   --------------------------------------------------------------------------
-   1) Crée un projet gratuit sur https://console.firebase.google.com
-   2) Active "Firestore Database" (mode production ou test)
-   3) Copie ta config Web ici (Paramètres du projet > Général > Vos applications)
-   4) Règles Firestore minimales pour ce projet (à adapter en prod) :
-
-      rules_version = '2';
-      service cloud.firestore {
-        match /databases/{database}/documents {
-          match /sessions/{sessionId} {
-            allow read, write: if true; // ⚠️ à restreindre en production
-          }
-        }
-      }
    ========================================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyCbRpwu1-AfvaPyudGVq0Jq5ahXcl4be4c",
@@ -369,7 +358,7 @@ const WHEEL_DATA = [
   },
   {
     action: "Postures de Soumission & Exposition Intime",
-    condition: "Rester totalement immobile en maintenant l'exposition totale de ses zones intimes sous votre regard.",
+    condition: "Rester totalement immobile en maintaining l'exposition totale de ses zones intimes sous votre regard.",
     recompense: "Crédit Shopping (Budget cadeau débloqué sur sa boutique préférée, offert par le Dominant)."
   },
   {
@@ -424,7 +413,7 @@ function showScreen(id){
 }
 
 /* ==========================================================================
-   INITIALISATION — restaure le rôle verrouillé au chargement
+   INITIALISATION
    ========================================================================== */
 let currentRole = LS.getItem('role');
 let currentSession = LS.getItem('sessionCode');
@@ -436,7 +425,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les valeurs <code>REMPLACER_MOI</code> par les clés de ton projet Firebase (dans le code, section <em>firebaseConfig</em>) pour que l'application fonctionne.";
+    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les valeurs <code>REMPLACER_MOI</code> par les clés de ton projet Firebase pour que l'application fonctionne.";
   }
 
   if (currentRole === 'souverain' && currentSession) {
@@ -465,7 +454,7 @@ function chooseRole(role){
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Impossible de continuer : la configuration Firebase n'est pas renseignée.<br>Remplace les valeurs <code>REMPLACER_MOI</code> dans le code (section <em>firebaseConfig</em>) avant d'utiliser l'application.";
+    warn.innerHTML = "⚠️ Impossible de continuer : la configuration Firebase n'est pas renseignée.<br>Remplace les valeurs dans le code avant d'utiliser l'application.";
     return;
   }
 
@@ -489,8 +478,7 @@ function chooseRole(role){
       cards.forEach(c => c.style.opacity = '1');
       const warn = document.getElementById('configWarning');
       warn.style.display = 'block';
-      warn.innerHTML = "⚠️ Échec de connexion à la base de données.<br>Détail technique : " + escapeHtml(err.message) +
-        "<br>Vérifie ta configuration Firebase et les règles Firestore.";
+      warn.innerHTML = "⚠️ Échec de connexion à la base de données.<br>Détail technique : " + escapeHtml(err.message);
       console.error('Erreur création session :', err);
     });
   } else {
@@ -521,15 +509,7 @@ function joinSession(){
 }
 
 /* ==========================================================================
-   NOTIFICATIONS (Souverain) — au premier plan / onglet ouvert
-   --------------------------------------------------------------------------
-   Remarque : l'API Notification ne peut afficher une alerte que si le
-   navigateur est ouvert (au moins en arrière-plan d'onglet). Pour recevoir
-   une véritable notification "push" alors que l'application est totalement
-   fermée, il faut ajouter un Service Worker + Firebase Cloud Messaging (FCM)
-   et un petit backend (ex. Cloud Function) qui envoie le push au moment de
-   l'écriture Firestore. Cette base couvre déjà la synchronisation temps réel
-   et l'alerte en premier plan ; le FCM peut être branché en complément.
+   NOTIFICATIONS (Souverain)
    ========================================================================== */
 function requestNotificationPermission(){
   if ('Notification' in window && Notification.permission === 'default') {
@@ -555,7 +535,6 @@ function enterControlPanel(){
   requestNotificationPermission();
 
   if (controlUnsub) controlUnsub();
-  let wasHiddenOnLastPending = false;
 
   controlUnsub = db.collection('sessions').doc(currentSession)
     .onSnapshot(doc => {
@@ -624,8 +603,8 @@ function enterWheelScreen(){
     });
 }
 
-/* ---- Dessin de la roue (canvas) ---- */
-const SEGMENT_COLORS = ['#6d0f0f', '#201d1c'];
+/* ---- Dessin de la roue (Canvas : nuances Violet Sensuel / Prune) ---- */
+const SEGMENT_COLORS = ['#4a0e4e', '#1f1227'];
 
 function drawWheel(){
   const canvas = document.getElementById('wheelCanvas');
@@ -645,7 +624,7 @@ function drawWheel(){
     ctx.closePath();
     ctx.fillStyle = SEGMENT_COLORS[i % 2];
     ctx.fill();
-    ctx.strokeStyle = 'rgba(212,175,55,0.55)';
+    ctx.strokeStyle = 'rgba(201,139,185,0.55)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -653,7 +632,7 @@ function drawWheel(){
     ctx.translate(cx, cy);
     ctx.rotate(start + segAngle / 2);
     ctx.textAlign = 'right';
-    ctx.fillStyle = '#e9d8a0';
+    ctx.fillStyle = '#f3e8f4';
     ctx.font = '600 20px Cormorant Garamond, serif';
     ctx.fillText(String(i + 1), r - 18, 6);
     ctx.restore();
@@ -661,7 +640,7 @@ function drawWheel(){
 
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI*2);
-  ctx.strokeStyle = 'rgba(212,175,55,0.6)';
+  ctx.strokeStyle = 'rgba(201,139,185,0.6)';
   ctx.lineWidth = 3;
   ctx.stroke();
 }
@@ -688,7 +667,6 @@ function spinWheel(){
   const delta = targetDeg;
 
   function easeOutCubicSlow(t){
-    // ralentissement prononcé + petit effet de suspense en fin de course
     return 1 - Math.pow(1 - t, 4);
   }
 
