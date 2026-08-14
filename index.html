@@ -221,6 +221,7 @@
     <div class="eyebrow">Session Privée</div>
     <h1 class="title">La Roue</h1>
     <p class="sub">Choisissez votre rôle pour cet appareil. Ce choix sera verrouillé définitivement sur ce téléphone.</p>
+    <div id="configWarning" style="display:none; width:100%; margin-bottom:18px; padding:14px 16px; border:1px solid rgba(154,28,28,.6); background:rgba(154,28,28,.12); border-radius:10px; color:#f0b0b0; font-size:13px; line-height:1.5;"></div>
     <div class="role-choice">
       <div class="role-card" onclick="chooseRole('souverain')">
         <h3>Le Dominant</h3>
@@ -316,12 +317,12 @@
       }
    ========================================================================== */
 const firebaseConfig = {
-  apiKey: "REMPLACER_MOI",
-  authDomain: "REMPLACER_MOI.firebaseapp.com",
-  projectId: "REMPLACER_MOI",
-  storageBucket: "REMPLACER_MOI.appspot.com",
-  messagingSenderId: "REMPLACER_MOI",
-  appId: "REMPLACER_MOI"
+  apiKey: "AIzaSyCbRpwu1-AfvaPyudGVq0Jq5ahXcl4be4c",
+  authDomain: "la-roue-9af22.firebaseapp.com",
+  projectId: "la-roue-9af22",
+  storageBucket: "la-roue-9af22.firebasestorage.app",
+  messagingSenderId: "140336167205",
+  appId: "1:140336167205:web:02012aa39cc007ec85c2cc"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -412,7 +413,6 @@ const WHEEL_DATA = [
     recompense: "Super Chèque Cadeau (Budget libre accordé pour sa boutique en ligne préférée)."
   }
 ];
-
 const LS = window.localStorage;
 
 /* ==========================================================================
@@ -433,6 +433,12 @@ let controlUnsub = null;
 let wheelUnsub = null;
 
 window.addEventListener('DOMContentLoaded', () => {
+  if (isFirebaseConfigMissing()) {
+    const warn = document.getElementById('configWarning');
+    warn.style.display = 'block';
+    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les valeurs <code>REMPLACER_MOI</code> par les clés de ton projet Firebase (dans le code, section <em>firebaseConfig</em>) pour que l'application fonctionne.";
+  }
+
   if (currentRole === 'souverain' && currentSession) {
     document.getElementById('generatedCode').textContent = currentSession;
     enterControlPanel();
@@ -443,6 +449,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function isFirebaseConfigMissing(){
+  return !firebaseConfig.apiKey || firebaseConfig.apiKey === "REMPLACER_MOI" || firebaseConfig.projectId === "REMPLACER_MOI";
+}
+
 /* ==========================================================================
    CHOIX DU ROLE
    ========================================================================== */
@@ -452,7 +462,16 @@ function generateSessionCode(){
 }
 
 function chooseRole(role){
+  if (isFirebaseConfigMissing()) {
+    const warn = document.getElementById('configWarning');
+    warn.style.display = 'block';
+    warn.innerHTML = "⚠️ Impossible de continuer : la configuration Firebase n'est pas renseignée.<br>Remplace les valeurs <code>REMPLACER_MOI</code> dans le code (section <em>firebaseConfig</em>) avant d'utiliser l'application.";
+    return;
+  }
+
   if (role === 'souverain') {
+    const cards = document.querySelectorAll('.role-card');
+    cards.forEach(c => c.style.opacity = '0.5');
     const code = generateSessionCode();
     db.collection('sessions').doc(code).set({
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -467,7 +486,12 @@ function chooseRole(role){
       showScreen('screen-souverain-code');
       requestNotificationPermission();
     }).catch(err => {
-      alert("Erreur de connexion à la base de données. Vérifiez la configuration Firebase.\n" + err.message);
+      cards.forEach(c => c.style.opacity = '1');
+      const warn = document.getElementById('configWarning');
+      warn.style.display = 'block';
+      warn.innerHTML = "⚠️ Échec de connexion à la base de données.<br>Détail technique : " + escapeHtml(err.message) +
+        "<br>Vérifie ta configuration Firebase et les règles Firestore.";
+      console.error('Erreur création session :', err);
     });
   } else {
     showScreen('screen-participant-join');
