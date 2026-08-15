@@ -16,19 +16,18 @@
 
 <style>
   :root{
-    /* Nuances : Violet Sensuel & BDSM Prune */
     --noir: #08040a;
     --noir-2: #120917;
     --anthracite: #1f1227;
-    --violet-deep: #2a083b;
-    --violet-bordeaux: #4a0e4e;
-    --violet-neon: #9d2b9d;
-    --or-rose: #e2b49a;
+    --bordeaux: #4a0e4e;
+    --bordeaux-deep: #2a083b;
+    --or: #9d2b9d;
     --or-doux: #c98bb9;
     --ivoire: #f3e8f4;
     --ivoire-att: #bca8c4;
     --danger: #b21e4b;
     --ok: #2f6b4f;
+    --or-rose: #e2b49a;
     --font-display: 'Cormorant Garamond', serif;
     --font-body: 'EB Garamond', serif;
   }
@@ -43,7 +42,24 @@
     overflow-x:hidden;
   }
 
+  /* ---------- Particules dorées en fond (ambiance vivante) ---------- */
+  #particles{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  .particle{
+    position:absolute; bottom:-10px; border-radius:50%;
+    background: radial-gradient(circle, rgba(157,43,157,.9), rgba(157,43,157,0));
+    opacity:.5; animation: floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:.6; }
+    90%{ opacity:.4; }
+    100%{ transform: translateY(-110vh) translateX(var(--drift, 20px)); opacity:0; }
+  }
+
   #app{
+    position:relative; z-index:1;
     min-height:100vh;
     display:flex;
     flex-direction:column;
@@ -52,11 +68,10 @@
     padding: clamp(20px, 4vw, 48px) clamp(16px, 5vw, 32px) 60px;
   }
 
-  .screen{ width:100%; max-width:480px; display:none; flex-direction:column; align-items:center; animation: fadeIn .5s ease; }
+  .screen{ width:100%; max-width:480px; display:none; flex-direction:column; align-items:center; animation: fadeIn .6s cubic-bezier(.2,.8,.2,1); }
   .screen.active{ display:flex; }
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
 
-  /* Tablettes et écrans moyens */
   @media (min-width: 700px){
     .screen{ max-width:560px; }
     h1.title{ font-size:48px; }
@@ -64,7 +79,6 @@
     .frame{ padding:32px; }
   }
 
-  /* Grands écrans / desktop */
   @media (min-width: 1024px){
     #app{ padding-top:64px; }
     .screen{ max-width:620px; }
@@ -75,53 +89,75 @@
   .eyebrow{
     letter-spacing:.35em; text-transform:uppercase; font-size:11px;
     color: var(--or-doux); font-family: var(--font-body); margin-bottom:10px; text-align:center;
+    opacity:0; animation: fadeInUp .6s ease forwards .05s;
   }
+
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 
   h1.title{
     font-family: var(--font-display); font-weight:600; font-style:italic;
     font-size: clamp(30px, 8vw, 40px); color: var(--ivoire); text-align:center; margin:0 0 6px;
-    text-shadow: 0 0 22px rgba(157,43,157,.4);
+    text-shadow: 0 0 22px rgba(157,43,157,.18);
+    opacity:0; animation: fadeInUp .7s ease forwards .12s;
   }
 
-  p.sub{ color:var(--ivoire-att); text-align:center; font-size:16px; max-width:360px; margin:0 auto 28px; line-height:1.5; }
+  p.sub{
+    color:var(--ivoire-att); text-align:center; font-size:16px; max-width:360px; margin:0 auto 28px; line-height:1.5;
+    opacity:0; animation: fadeInUp .7s ease forwards .2s;
+  }
 
   .frame{
-    width:100%; border:1px solid rgba(201,139,185,.35);
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.35));
+    width:100%; border:1px solid rgba(157,43,157,.35);
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.25));
     border-radius:18px; padding:24px; position:relative;
-    box-shadow: 0 0 0 1px rgba(157,43,157,.12), 0 20px 60px rgba(0,0,0,.75);
+    box-shadow: 0 0 0 1px rgba(157,43,157,.06), 0 20px 60px rgba(0,0,0,.55);
+    opacity:0; animation: fadeInUp .7s ease forwards .28s;
   }
   .frame::before{
-    content:""; position:absolute; inset:6px; border:1px solid rgba(226,180,154,.15); border-radius:12px; pointer-events:none;
+    content:""; position:absolute; inset:6px; border:1px solid rgba(157,43,157,.15); border-radius:12px; pointer-events:none;
   }
 
   .btn{
     font-family: var(--font-display); font-weight:600; font-size:18px; letter-spacing:.06em;
-    color: #ffffff; background: linear-gradient(180deg, #ba3cba, var(--violet-neon) 60%, #681868);
+    color: var(--noir); background: linear-gradient(180deg, #ba3cba, var(--or) 60%, #681868);
     border:none; border-radius:10px; padding:15px 22px; width:100%;
     cursor:pointer; text-transform:uppercase;
-    box-shadow: 0 8px 20px rgba(157,43,157,.35), inset 0 1px 0 rgba(255,255,255,.3);
+    box-shadow: 0 8px 20px rgba(157,43,157,.25), inset 0 1px 0 rgba(255,255,255,.4);
     transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    position:relative; overflow:hidden;
   }
+  .btn::after{
+    content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: skewX(-20deg);
+    animation: sheen 3.2s ease-in-out infinite;
+  }
+  @keyframes sheen{
+    0%{ left:-60%; } 45%{ left:130%; } 100%{ left:130%; }
+  }
+  .btn:hover{ box-shadow: 0 10px 26px rgba(157,43,157,.4), inset 0 1px 0 rgba(255,255,255,.5); transform: translateY(-1px); }
   .btn:active{ transform: translateY(1px) scale(.99); }
   .btn:disabled{ filter:grayscale(.6) brightness(.6); cursor:not-allowed; box-shadow:none; }
+  .btn:disabled::after{ display:none; }
 
   .btn.ghost{
-    background:transparent; color: var(--or-doux); border:1px solid rgba(201,139,185,.5);
+    background:transparent; color: var(--or); border:1px solid rgba(157,43,157,.5);
     box-shadow:none; margin-top:12px;
   }
+  .btn.ghost::after{ display:none; }
   .btn.bordeaux{
-    background: linear-gradient(180deg, #74167a, var(--violet-bordeaux) 55%, var(--violet-deep));
+    background: linear-gradient(180deg, #74167a, var(--bordeaux) 55%, var(--bordeaux-deep));
     color: var(--ivoire);
-    box-shadow: 0 8px 20px rgba(74,14,78,.5), inset 0 1px 0 rgba(255,255,255,.12);
+    box-shadow: 0 8px 20px rgba(109,15,15,.4), inset 0 1px 0 rgba(255,255,255,.12);
   }
 
   input.code-input{
     width:100%; text-align:center; letter-spacing:.3em; font-family: var(--font-display);
-    font-size:26px; padding:14px; border-radius:10px; border:1px solid rgba(201,139,185,.4);
-    background: rgba(8,4,10,.6); color: var(--or-rose); margin-bottom:16px; text-transform:uppercase;
+    font-size:26px; padding:14px; border-radius:10px; border:1px solid rgba(157,43,157,.4);
+    background: rgba(0,0,0,.35); color: var(--or); margin-bottom:16px; text-transform:uppercase;
+    transition: box-shadow .2s, border-color .2s;
   }
-  input.code-input:focus{ outline:none; border-color: var(--violet-neon); box-shadow:0 0 0 3px rgba(157,43,157,.25); }
+  input.code-input:focus{ outline:none; border-color: var(--or); box-shadow:0 0 0 3px rgba(157,43,157,.15); }
 
   .role-choice{ display:flex; flex-direction:column; gap:14px; width:100%; margin-top:8px; }
   @media (min-width: 600px){
@@ -129,33 +165,36 @@
     .role-card{ flex:1; }
   }
   .role-card{
-    border:1px solid rgba(201,139,185,.3); border-radius:14px; padding:18px 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(26,10,36,.4));
-    cursor:pointer; transition: border-color .2s, transform .15s, box-shadow .2s;
+    border:1px solid rgba(157,43,157,.3); border-radius:14px; padding:18px 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.3));
+    cursor:pointer; transition: border-color .25s, transform .18s, box-shadow .25s;
+    opacity:0; animation: fadeInUp .6s ease forwards;
   }
-  .role-card:hover{ border-color: var(--violet-neon); box-shadow: 0 0 15px rgba(157,43,157,.2); }
+  .role-card:nth-child(1){ animation-delay: .3s; }
+  .role-card:nth-child(2){ animation-delay: .4s; }
+  .role-card:hover{ border-color: var(--or); box-shadow: 0 10px 26px rgba(157,43,157,.18); transform: translateY(-2px); }
   .role-card:active{ transform: scale(.98); }
-  .role-card h3{ font-family: var(--font-display); font-style:italic; color: var(--or-rose); margin:0 0 4px; font-size:22px; }
+  .role-card h3{ font-family: var(--font-display); font-style:italic; color: var(--or); margin:0 0 4px; font-size:22px; }
   .role-card p{ margin:0; color: var(--ivoire-att); font-size:14px; }
 
-  /* ---------- Code de session (Souverain) ---------- */
   .session-code{
     font-family: var(--font-display); font-size: clamp(30px, 9vw, 46px); letter-spacing:.15em;
-    color: var(--or-rose); text-align:center; margin: 6px 0 4px;
-    text-shadow: 0 0 30px rgba(226,180,154,.4);
+    color: var(--or); text-align:center; margin: 6px 0 4px;
+    text-shadow: 0 0 30px rgba(157,43,157,.35);
+    animation: glowPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{ text-shadow: 0 0 20px rgba(157,43,157,.3); }
+    50%{ text-shadow: 0 0 40px rgba(157,43,157,.6); }
   }
   .hint{ font-size:13px; color: var(--ivoire-att); text-align:center; margin-bottom:18px; }
 
-  /* ---------- Roue ---------- */
   .wheel-wrap{
     position:relative; width: min(88vw, 360px); aspect-ratio:1/1; margin: 10px auto 22px;
+    opacity:0; animation: fadeInUp .7s ease forwards .25s;
   }
-  @media (min-width: 700px){
-    .wheel-wrap{ width: min(60vw, 420px); }
-  }
-  @media (min-width: 1024px){
-    .wheel-wrap{ width: min(38vw, 460px); }
-  }
+  @media (min-width: 700px){ .wheel-wrap{ width: min(60vw, 420px); } }
+  @media (min-width: 1024px){ .wheel-wrap{ width: min(38vw, 460px); } }
   .pointer{
     position:absolute; top:-14px; left:50%; transform:translateX(-50%);
     width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent;
@@ -164,23 +203,30 @@
   }
   canvas#wheelCanvas{
     width:100%; height:100%; border-radius:50%;
-    box-shadow: 0 0 0 6px var(--noir-2), 0 0 0 8px rgba(201,139,185,.6), 0 20px 50px rgba(0,0,0,.8);
+    box-shadow: 0 0 0 6px var(--noir-2), 0 0 0 8px rgba(157,43,157,.6), 0 20px 50px rgba(0,0,0,.6);
+    transition: box-shadow .3s ease;
+  }
+  canvas#wheelCanvas.spinning-glow{
+    box-shadow: 0 0 0 6px var(--noir-2), 0 0 0 8px rgba(157,43,157,.95), 0 0 60px rgba(157,43,157,.5), 0 20px 50px rgba(0,0,0,.6);
   }
   .hub{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
     width:56px; height:56px; border-radius:50%; z-index:4;
-    background: radial-gradient(circle at 35% 30%, #f4d3c1, var(--or-rose) 55%, #8d5639);
-    box-shadow: 0 0 0 2px var(--noir), 0 4px 12px rgba(0,0,0,.7);
+    background: radial-gradient(circle at 35% 30%, #f4d3c1, var(--or-rose) 55%, #5c1f5c);
+    box-shadow: 0 0 0 2px var(--noir), 0 4px 12px rgba(0,0,0,.6);
   }
 
   .status-line{
     text-align:center; font-size:14px; color: var(--ivoire-att); min-height:20px; margin-bottom:14px;
+    transition: opacity .3s ease;
   }
-  /* ---------- Panneau Souverain ---------- */
+
   .draw-card{
-    width:100%; border:1px solid rgba(201,139,185,.3); border-radius:14px; padding:20px;
-    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(26,10,36,.4)); margin-bottom:16px;
+    width:100%; border:1px solid rgba(157,43,157,.3); border-radius:14px; padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.3)); margin-bottom:16px;
+    animation: cardIn .5s cubic-bezier(.2,.8,.25,1);
   }
+  @keyframes cardIn{ from{ opacity:0; transform: translateY(10px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
   .draw-card .label{ font-size:11px; letter-spacing:.25em; text-transform:uppercase; color: var(--or-doux); margin-bottom:4px; }
   .draw-card .value{ font-family: var(--font-display); font-size:22px; font-style:italic; color: var(--ivoire); margin-bottom:14px; }
   .empty-state{ text-align:center; color: var(--ivoire-att); font-size:15px; padding:30px 10px; }
@@ -189,65 +235,70 @@
     display:inline-block; padding:4px 10px; border-radius:20px; font-size:11px; letter-spacing:.1em;
     text-transform:uppercase; border:1px solid;
   }
-  .badge.pending{ color:#e2b49a; border-color:#e2b49a; }
+  .badge.pending{ color:#ba3cba; border-color:#ba3cba; animation: badgePulse 1.8s ease-in-out infinite; }
   .badge.granted{ color:#7fd0a0; border-color:#7fd0a0; }
+  @keyframes badgePulse{ 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
 
-  /* ---------- Popup récompense ---------- */
   .overlay{
-    position:fixed; inset:0; background: rgba(8,4,10,.85); backdrop-filter: blur(8px);
+    position:fixed; inset:0; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
     display:none; align-items:center; justify-content:center; z-index:50; padding:24px;
   }
   .overlay.active{ display:flex; }
   .popup{
-    max-width:380px; width:100%; text-align:center; border:1px solid rgba(201,139,185,.5);
+    max-width:380px; width:100%; text-align:center; border:1px solid rgba(157,43,157,.5);
     border-radius:16px; padding:32px 26px; background: linear-gradient(180deg, #1f0b27, #0b040e);
-    box-shadow: 0 0 60px rgba(157,43,157,.25), 0 30px 80px rgba(0,0,0,.8);
-    animation: popIn .4s cubic-bezier(.2,.9,.3,1.3);
+    box-shadow: 0 0 60px rgba(157,43,157,.15), 0 30px 80px rgba(0,0,0,.7);
+    animation: popIn .45s cubic-bezier(.2,.9,.3,1.3);
   }
-  @keyframes popIn{ from{ transform:scale(.85); opacity:0;} to{ transform:scale(1); opacity:1; } }
-  .popup h2{ font-family: var(--font-display); font-style:italic; color: var(--or-rose); font-size:26px; margin:10px 0; }
+  @keyframes popIn{ from{ transform:scale(.82); opacity:0;} to{ transform:scale(1); opacity:1; } }
+  .popup h2{ font-family: var(--font-display); font-style:italic; color: var(--or); font-size:26px; margin:10px 0; }
   .popup p{ color: var(--ivoire-att); font-size:15px; }
 
-  /* ---------- ANIMATION DE BIENVENUE SENSUELLE ---------- */
-  #welcomeOverlay{
-    position:fixed; inset:0; background: rgba(8,4,10,.95); backdrop-filter: blur(10px);
-    display:none; flex-direction:column; align-items:center; justify-content:center;
-    z-index:100; overflow:hidden; opacity:0; transition: opacity .5s ease;
+  /* ---------- Overlay de bienvenue (La Soumise) ---------- */
+  .welcome-overlay{
+    position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(120% 100% at 50% 40%, #201417 0%, #0b0708 70%);
+    opacity:0; pointer-events:none; transition: opacity .5s ease;
   }
-  #welcomeOverlay.active{ display:flex; opacity:1; }
-  
-  .welcome-title{
-    font-family: var(--font-display); font-style:italic; font-size: clamp(32px, 8vw, 52px);
-    color: var(--or-rose); text-align:center; z-index:2;
-    text-shadow: 0 0 25px var(--violet-neon), 0 0 50px var(--violet-bordeaux);
-    animation: pulseText 2s infinite ease-in-out;
+  .welcome-overlay.active{ opacity:1; pointer-events:all; }
+  .welcome-content{ text-align:center; padding:20px; transform: translateY(10px); opacity:0; }
+  .welcome-overlay.active .welcome-content{ animation: welcomeIn 1s cubic-bezier(.2,.85,.25,1) forwards .15s; }
+  @keyframes welcomeIn{ to{ transform:translateY(0); opacity:1; } }
+  .welcome-ring{
+    width:96px; height:96px; margin:0 auto 22px; border-radius:50%;
+    border: 1px solid rgba(157,43,157,.5);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 0 40px rgba(157,43,157,.25);
+    animation: ringPulse 2.4s ease-in-out infinite;
   }
-  .welcome-sub{
-    font-family: var(--font-body); font-size: clamp(16px, 4vw, 22px);
-    color: var(--ivoire); text-align:center; z-index:2; margin-top:10px;
-    letter-spacing:.1em; text-transform:uppercase;
+  .welcome-ring::before{ content:"♛"; font-size:34px; color: var(--or); }
+  @keyframes ringPulse{
+    0%,100%{ box-shadow: 0 0 25px rgba(157,43,157,.2); transform:scale(1); }
+    50%{ box-shadow: 0 0 55px rgba(157,43,157,.45); transform:scale(1.04); }
   }
-  @keyframes pulseText {
-    0%, 100% { transform: scale(1); filter: brightness(1); }
-    50% { transform: scale(1.04); filter: brightness(1.3); }
-  }
-
-  .particle{
-    position:absolute; pointer-events:none; z-index:1; animation: floatUp linear forwards;
-  }
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; }
-  }
+  .welcome-eyebrow{ letter-spacing:.4em; text-transform:uppercase; font-size:11px; color: var(--or-doux); margin-bottom:14px; }
+  .welcome-title{ font-family: var(--font-display); font-style:italic; font-weight:600; font-size: clamp(30px, 9vw, 44px); color: var(--ivoire); margin:0 0 10px; text-shadow: 0 0 26px rgba(157,43,157,.3); }
+  .welcome-sub{ color: var(--ivoire-att); font-size:15px; max-width:320px; margin:0 auto; line-height:1.5; }
 
   .footer-role{
     margin-top:26px; font-size:11px; color: rgba(188,168,196,.5); letter-spacing:.2em; text-transform:uppercase;
   }
 
   .link-ghost{ background:none; border:none; color: var(--ivoire-att); text-decoration:underline; font-size:13px; margin-top:16px; cursor:pointer; }
+
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-6px); }
+    40%{ transform: translateX(6px); }
+    60%{ transform: translateX(-4px); }
+    80%{ transform: translateX(4px); }
+  }
+  .shake{ animation: shake .4s ease; }
 </style>
 </head>
 <body>
+
+<div id="particles"></div>
 
 <div id="app">
 
@@ -256,7 +307,7 @@
     <div class="eyebrow">Session Privée</div>
     <h1 class="title">La Roue</h1>
     <p class="sub">Choisissez votre rôle pour cet appareil. Ce choix sera verrouillé définitivement sur ce téléphone.</p>
-    <div id="configWarning" style="display:none; width:100%; margin-bottom:18px; padding:14px 16px; border:1px solid rgba(178,30,75,.6); background:rgba(178,30,75,.12); border-radius:10px; color:#f0b0c0; font-size:13px; line-height:1.5;"></div>
+    <div id="configWarning" style="display:none; width:100%; margin-bottom:18px; padding:14px 16px; border:1px solid rgba(154,28,28,.6); background:rgba(154,28,28,.12); border-radius:10px; color:#f0b0b0; font-size:13px; line-height:1.5;"></div>
     <div class="role-choice">
       <div class="role-card" onclick="chooseRole('souverain')">
         <h3>Le Dominant</h3>
@@ -301,8 +352,11 @@
       <canvas id="wheelCanvas" width="600" height="600"></canvas>
       <div class="hub"></div>
     </div>
-    <div class="status-line" id="wheelStatus">Faites tourner la roue quand vous êtes prête.</div>
-    <button class="btn" id="spinBtn" onclick="spinWheel()">Faire tourner la Roue</button>
+    <div class="status-line" id="wheelStatus">Tourne la roue ma puce</div>
+    <button class="btn" id="spinBtn" onclick="spinWheel()">Tourne la roue ma puce</button>
+
+    <div id="participantDrawContent" style="width:100%; margin-top:18px;"></div>
+
     <div class="footer-role">Rôle verrouillé · La Soumise</div>
   </section>
 
@@ -323,25 +377,50 @@
 
 </div>
 
-<!-- =================== POPUP RECOMPENSE =================== -->
+<!-- =================== POPUP RECOMPENSE (Participant) =================== -->
 <div class="overlay" id="rewardOverlay">
   <div class="popup">
     <div class="eyebrow">Récompense Accordée</div>
-    <h2>Voici votre récompense</h2>
-    <p id="rewardText">—</p>
-    <button class="btn" style="margin-top:18px;" onclick="closeRewardPopup()">J'ai compris</button>
+    <h2 id="rewardHeading">Votre Dominant a validé votre épreuve</h2>
+    <p style="color: var(--ivoire-att); font-size:14px; margin-bottom:20px;">Une récompense vous attend.</p>
+    <button class="btn" id="revealRewardBtn" onclick="revealReward()">Appuyer pour voir votre récompense</button>
+    <div id="rewardCardWrap" style="display:none; width:100%;">
+      <div class="draw-card" style="text-align:left; margin-top:4px; margin-bottom:0;">
+        <div class="label">Votre récompense</div>
+        <div class="value" id="rewardText" style="margin-bottom:0;">—</div>
+      </div>
+      <button class="btn" style="margin-top:18px;" onclick="closeRewardPopup()">J'ai compris</button>
+    </div>
   </div>
 </div>
 
-<!-- =================== OVERLAY ANIMATION SENSUELLE =================== -->
-<div id="welcomeOverlay">
-  <div class="welcome-title">Bienvenue, Ma Soumise...</div>
-  <div class="welcome-sub">Préparez-vous à vous soumettre au destin</div>
+<!-- =================== OVERLAY DE BIENVENUE (La Soumise) =================== -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-content">
+    <div class="welcome-ring"></div>
+    <div class="welcome-eyebrow">Session liée</div>
+    <h2 class="welcome-title">Bienvenue, Soumise</h2>
+    <p class="welcome-sub">Votre appareil est désormais lié à votre Dominant. La roue attend votre geste.</p>
+  </div>
 </div>
 
 <script>
 /* ==========================================================================
    CONFIGURATION FIREBASE
+   --------------------------------------------------------------------------
+   1) Crée un projet gratuit sur https://console.firebase.google.com
+   2) Active "Firestore Database" (mode production ou test)
+   3) Copie ta config Web ici (Paramètres du projet > Général > Vos applications)
+   4) Règles Firestore minimales pour ce projet (à adapter en prod) :
+
+      rules_version = '2';
+      service cloud.firestore {
+        match /databases/{database}/documents {
+          match /sessions/{sessionId} {
+            allow read, write: if true; // ⚠️ à restreindre en production
+          }
+        }
+      }
    ========================================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyCbRpwu1-AfvaPyudGVq0Jq5ahXcl4be4c",
@@ -356,12 +435,12 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* ==========================================================================
-   DONNEES DE LA ROUE — 16 CASES
+   DONNEES DE LA ROUE — 16 CASES (à éditer librement)
    ========================================================================== */
 const WHEEL_DATA = [
   {
     action: "Masturbation guidée aux Sextoys",
-    condition: "Jouir elle-même devant la caméra sous vos ordres.",
+    condition: "Jouir toi-même devant la caméra sous mes ordres.",
     recompense: "Crédit de 24h sans aucune tâche ni contrainte + Prise en charge totale par le Dominant qui lui offre ce qu'elle désire."
   },
   {
@@ -370,9 +449,9 @@ const WHEEL_DATA = [
     recompense: "Crédit de 24h sans aucune tâche ni contrainte + Prise en charge totale par le Dominant qui lui offre ce qu'elle désire."
   },
   {
-    action: "Port du Plug imposé",
+    action: "Port d'un accessoire imposé",
     condition: "Conserver l'accessoire sans se plaindre pendant toute la durée fixée par le Dominant.",
-    recompense: "Achat Coup de Cœur (Vêtement ou accessoire de son choix offert par le Dominant)."
+    recompense: "Achat Coup de Cœur (Vêtement ou accessoire de ton choix offert par le Dominant)."
   },
   {
     action: "Autocorrection & Discipline Intime",
@@ -382,11 +461,11 @@ const WHEEL_DATA = [
   {
     action: "Déni d'Orgasme & Endurance (Edging)",
     condition: "Obéissance stricte aux 3 ordres d'arrêt au bord de l'orgasme devant l'écran.",
-    recompense: "Totale Libération (Autorisation de jouir librement + Cadeau surprise livré chez elle par le Dominant)."
+    recompense: "Totale Libération (Autorisation de jouir librement + Cadeau surprise livré chez elle)."
   },
   {
     action: "Stimulation à travers le tissu (10 minutes)",
-    condition: "Maintenir le rythme fixé à travers le tissu pendant 10 minutes sans toucher la peau directement.",
+    condition: "Maintenir le rythme fixé à travers le tissu pendant 10 minutes en stimulant directement les partie intime sous le regard du dominant.",
     recompense: "Annulation d'une punition en attente + Prise en charge d'un plaisir offert à distance."
   },
   {
@@ -402,12 +481,12 @@ const WHEEL_DATA = [
   {
     action: "Masturbation yeux bandés",
     condition: "Obéissance vocale immédiate aux variations de rythme données par le Dominant.",
-    recompense: "Week-end sans contrainte ni règles d'obéissance."
+    recompense: "Week-end sans contrainte ni règles d'obéissance et un cadeau au choix."
   },
   {
     action: "Test de la Frustration (Orgasme Ruiné)",
     condition: "Stopper instantanément tout mouvement au sommet de l'excitation sur ordre du Dominant.",
-    recompense: "Super Récompense d'Obéissance (Prise en charge d'un projet/souhait personnel + Envoi d'un cadeau à domicile)."
+    recompense: "Super Récompense d'Obéissance (la soumise pourras passer un week-end total en possession d'un sextoy de son choix + Envoi d'un cadeau à domicile)."
   },
   {
     action: "Contrôle Total par Sextoy Connecté",
@@ -417,7 +496,7 @@ const WHEEL_DATA = [
   {
     action: "Bondage à Distance (Poignets Attachés)",
     condition: "Réussir la séance entièrement entravée dans la posture ordonnée par le Dominant.",
-    recompense: "Pass Soirée Privilège (Droit absolu de choisir l'activité ou le film partagé à distance)."
+    recompense: "le dominant devra satisfaire n'importe quel plaisir demander par la soumise."
   },
   {
     action: "Pénétration Lente Extrême (Slow Motion)",
@@ -431,23 +510,52 @@ const WHEEL_DATA = [
   },
   {
     action: "Stimulation Thermique au Glaçon",
-    condition: "Passer le glaçon jusqu'à fonte complète puis stimuler la zone sans reculer ni couper la caméra.",
+    condition: "Passer le glaçon sur les parties intime jusqu'à fonte complète puis stimuler la zone sans reculer ni couper la caméra.",
     recompense: "Plaisir Gourmand VIP (Repas complet de luxe livré à domicile offert par le Dominant)."
   },
   {
     action: "L'Épreuve de la Statue (Pénétration Immobile)",
     condition: "Conserver la pénétration maximale immobile sans bouger pendant 15 minutes chronométrées face à la caméra.",
-    recompense: "Super Chèque Cadeau (Budget libre accordé pour sa boutique en ligne préférée)."
+    recompense: "Validation d'un panier de la soumise."
   }
 ];
+
 const LS = window.localStorage;
+
+/* ==========================================================================
+   PARTICULES DE FOND (ambiance)
+   ========================================================================== */
+function initParticles(){
+  const container = document.getElementById('particles');
+  const count = window.innerWidth < 700 ? 14 : 26;
+  for (let i = 0; i < count; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random() * 3;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+    const duration = 10 + Math.random() * 14;
+    p.style.animationDuration = duration + 's';
+    p.style.animationDelay = (Math.random() * duration) + 's';
+    container.appendChild(p);
+  }
+}
 
 /* ==========================================================================
    NAVIGATION ENTRE ECRANS
    ========================================================================== */
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  // relance les animations d'entrée à chaque affichage
+  target.querySelectorAll('.eyebrow, h1.title, p.sub, .frame, .role-card, .wheel-wrap').forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
 }
 
 /* ==========================================================================
@@ -460,17 +568,19 @@ let controlUnsub = null;
 let wheelUnsub = null;
 
 window.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les clés de ton projet Firebase pour que l'application fonctionne.";
+    warn.innerHTML = "⚠️ Configuration Firebase manquante.<br>Remplace les valeurs <code>REMPLACER_MOI</code> par les clés de ton projet Firebase (dans le code, section <em>firebaseConfig</em>) pour que l'application fonctionne.";
   }
 
   if (currentRole === 'souverain' && currentSession) {
     document.getElementById('generatedCode').textContent = currentSession;
     enterControlPanel();
   } else if (currentRole === 'participant' && currentSession) {
-    enterWheelScreen();
+    enterWheelScreen(false);
   } else {
     showScreen('screen-role');
   }
@@ -481,49 +591,18 @@ function isFirebaseConfigMissing(){
 }
 
 /* ==========================================================================
-   CHOIX DU ROLE & ANIMATION SENSUELLE
+   CHOIX DU ROLE
    ========================================================================== */
 function generateSessionCode(){
   const n = Math.floor(1000 + Math.random() * 9000);
   return `SESSION-${n}`;
 }
 
-function triggerSensualWelcome(callback){
-  const overlay = document.getElementById('welcomeOverlay');
-  overlay.classList.add('active');
-
-  const symbols = ['🖤', '💜', '✨', '💋', '⛓️', '🔮'];
-  
-  for(let i=0; i<35; i++){
-    setTimeout(() => {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.bottom = '-50px';
-      p.style.fontSize = (Math.random() * 20 + 18) + 'px';
-      p.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      overlay.appendChild(p);
-
-      setTimeout(() => p.remove(), 4000);
-    }, i * 70);
-  }
-
-  setTimeout(() => {
-    overlay.style.opacity = '0';
-    setTimeout(() => {
-      overlay.classList.remove('active');
-      overlay.style.opacity = '1';
-      callback();
-    }, 500);
-  }, 2800);
-}
-
 function chooseRole(role){
   if (isFirebaseConfigMissing()) {
     const warn = document.getElementById('configWarning');
     warn.style.display = 'block';
-    warn.innerHTML = "⚠️ Configuration Firebase manquante dans le code.";
+    warn.innerHTML = "⚠️ Impossible de continuer : la configuration Firebase n'est pas renseignée.<br>Remplace les valeurs <code>REMPLACER_MOI</code> dans le code (section <em>firebaseConfig</em>) avant d'utiliser l'application.";
     return;
   }
 
@@ -545,12 +624,14 @@ function chooseRole(role){
       requestNotificationPermission();
     }).catch(err => {
       cards.forEach(c => c.style.opacity = '1');
+      const warn = document.getElementById('configWarning');
+      warn.style.display = 'block';
+      warn.innerHTML = "⚠️ Échec de connexion à la base de données.<br>Détail technique : " + escapeHtml(err.message) +
+        "<br>Vérifie ta configuration Firebase et les règles Firestore.";
       console.error('Erreur création session :', err);
     });
   } else {
-    triggerSensualWelcome(() => {
-      showScreen('screen-participant-join');
-    });
+    showScreen('screen-participant-join');
   }
 }
 
@@ -558,26 +639,42 @@ function joinSession(){
   const raw = document.getElementById('joinCodeInput').value.trim().toUpperCase();
   const code = raw.startsWith('SESSION-') ? raw : `SESSION-${raw.replace(/\D/g,'')}`;
   const statusEl = document.getElementById('joinStatus');
+  const inputEl = document.getElementById('joinCodeInput');
   statusEl.textContent = "Vérification du code…";
 
   db.collection('sessions').doc(code).get().then(doc => {
     if (!doc.exists) {
       statusEl.textContent = "Code introuvable. Vérifiez et réessayez.";
+      inputEl.classList.add('shake');
+      setTimeout(() => inputEl.classList.remove('shake'), 400);
       return;
     }
     currentRole = 'participant';
     currentSession = code;
     LS.setItem('role', 'participant');
     LS.setItem('sessionCode', code);
-    enterWheelScreen();
+    enterWheelScreen(true); // true => affiche l'animation de bienvenue
   }).catch(err => {
     statusEl.textContent = "Erreur de connexion. Réessayez.";
+    inputEl.classList.add('shake');
+    setTimeout(() => inputEl.classList.remove('shake'), 400);
     console.error(err);
   });
 }
 
 /* ==========================================================================
-   NOTIFICATIONS
+   ANIMATION DE BIENVENUE (La Soumise)
+   ========================================================================== */
+function playWelcomeAnimation(){
+  const overlay = document.getElementById('welcomeOverlay');
+  overlay.classList.add('active');
+  const dismiss = () => overlay.classList.remove('active');
+  overlay.addEventListener('click', dismiss, { once: true });
+  setTimeout(dismiss, 2600);
+}
+
+/* ==========================================================================
+   NOTIFICATIONS (Souverain) — au premier plan / onglet ouvert
    ========================================================================== */
 function requestNotificationPermission(){
   if ('Notification' in window && Notification.permission === 'default') {
@@ -648,11 +745,19 @@ function grantReward(){
 
 /* ==========================================================================
    ECRAN PARTICIPANT — LA ROUE
+   --------------------------------------------------------------------------
+   La Soumise voit désormais elle aussi le détail complet du tirage
+   (action, condition, récompense) dès qu'il est effectué, exactement
+   comme le Dominant — et pas seulement une fois la récompense accordée.
    ========================================================================== */
-function enterWheelScreen(){
+function enterWheelScreen(showWelcome){
   showScreen('screen-wheel');
   drawWheel();
   document.getElementById('spinBtn').disabled = false;
+
+  if (showWelcome) {
+    playWelcomeAnimation();
+  }
 
   if (wheelUnsub) wheelUnsub();
   wheelUnsub = db.collection('sessions').doc(currentSession)
@@ -660,6 +765,9 @@ function enterWheelScreen(){
       const data = doc.data();
       if (!data) return;
       const draw = data.currentDraw;
+
+      renderParticipantDraw(draw);
+
       if (draw && draw.status === 'granted') {
         const drawId = String(draw.grantedAt ? draw.grantedAt.toMillis() : draw.action);
         if (drawId !== lastShownDrawId) {
@@ -671,7 +779,27 @@ function enterWheelScreen(){
     });
 }
 
-/* ---- Dessin de la roue ---- */
+function renderParticipantDraw(draw){
+  const container = document.getElementById('participantDrawContent');
+  if (!draw) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const isPending = draw.status === 'pending';
+  container.innerHTML = `
+    <div class="draw-card">
+      <span class="badge ${isPending ? 'pending' : 'granted'}">${isPending ? 'À réaliser' : 'Récompense accordée'}</span>
+      <div style="height:14px;"></div>
+      <div class="label">Votre épreuve</div>
+      <div class="value">${escapeHtml(draw.action)}</div>
+      <div class="label">Condition de réussite</div>
+      <div class="value" style="font-size:17px; margin-bottom:0;">${escapeHtml(draw.condition)}</div>
+    </div>
+  `;
+}
+
+/* ---- Dessin de la roue (canvas) ---- */
 const SEGMENT_COLORS = ['#4a0e4e', '#1f1227'];
 
 function drawWheel(){
@@ -692,7 +820,7 @@ function drawWheel(){
     ctx.closePath();
     ctx.fillStyle = SEGMENT_COLORS[i % 2];
     ctx.fill();
-    ctx.strokeStyle = 'rgba(201,139,185,0.55)';
+    ctx.strokeStyle = 'rgba(157,43,157,0.55)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
@@ -708,7 +836,7 @@ function drawWheel(){
 
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI*2);
-  ctx.strokeStyle = 'rgba(201,139,185,0.6)';
+  ctx.strokeStyle = 'rgba(157,43,157,0.6)';
   ctx.lineWidth = 3;
   ctx.stroke();
 }
@@ -721,6 +849,7 @@ function spinWheel(){
   isSpinning = true;
   document.getElementById('spinBtn').disabled = true;
   document.getElementById('wheelStatus').textContent = "La roue tourne…";
+  document.getElementById('wheelCanvas').classList.add('spinning-glow');
 
   const targetIndex = Math.floor(Math.random() * WHEEL_DATA.length);
   const segAngleDeg = 360 / WHEEL_DATA.length;
@@ -749,6 +878,7 @@ function spinWheel(){
       requestAnimationFrame(frame);
     } else {
       currentRotation = (startRotation + delta) % 360;
+      canvas.classList.remove('spinning-glow');
       finishSpin(targetIndex);
     }
   }
@@ -758,12 +888,8 @@ function spinWheel(){
 function finishSpin(index){
   isSpinning = false;
   const item = WHEEL_DATA[index];
-
-  // Affichage direct du résultat à l'écran
-  document.getElementById('wheelStatus').textContent = "Tirage effectué ! En attente de validation.";
-  
-  // Pop-up d'annonce du tirage
-  showRewardPopup(`Vous avez tiré : "${item.action}". Condition : ${item.condition}`);
+  document.getElementById('wheelStatus').textContent =
+    "Votre choix sera communiqué à votre Dominant, préparez-vous à la réaliser.";
 
   LS.removeItem('lastShownDrawId');
   lastShownDrawId = null;
@@ -790,9 +916,19 @@ function finishSpin(index){
 /* ==========================================================================
    POPUP RECOMPENSE
    ========================================================================== */
+let pendingRewardText = '';
+
 function showRewardPopup(text){
-  document.getElementById('rewardText').textContent = text;
+  pendingRewardText = text;
+  document.getElementById('revealRewardBtn').style.display = 'block';
+  document.getElementById('rewardCardWrap').style.display = 'none';
+  document.getElementById('rewardText').textContent = '—';
   document.getElementById('rewardOverlay').classList.add('active');
+}
+function revealReward(){
+  document.getElementById('rewardText').textContent = pendingRewardText;
+  document.getElementById('revealRewardBtn').style.display = 'none';
+  document.getElementById('rewardCardWrap').style.display = 'block';
 }
 function closeRewardPopup(){
   document.getElementById('rewardOverlay').classList.remove('active');
